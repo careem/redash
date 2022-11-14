@@ -40,7 +40,7 @@ TRINO_TYPES_MAPPING = {
 
 class Trino(BaseQueryRunner):
     noop_query = "SELECT 1"
-    should_annotate_query = False
+    should_annotate_query = True
 
     @classmethod
     def configuration_schema(cls):
@@ -80,7 +80,7 @@ class Trino(BaseQueryRunner):
         query = """
             SELECT table_schema, table_name, column_name
             FROM information_schema.columns
-            WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
+            WHERE table_schema == 'prod_dwh'
         """
         results, error = self.run_query(query, None)
 
@@ -121,11 +121,6 @@ class Trino(BaseQueryRunner):
         cursor = connection.cursor()
 
         try:
-            redash_username = f"Redash Username: {self.configuration.get('username')}"
-            redash_user = f"User: {str(user)}"
-            query_header = "/* " + redash_username + ", " + redash_user + " */\n"
-
-            cursor.execute(query_header + query)
             cursor.execute(query)
             results = cursor.fetchall()
             description = cursor.description
