@@ -112,6 +112,7 @@ class Trino(BaseQueryRunner):
             host=self.configuration.get("host", ""),
             port=self.configuration.get("port", 8080),
             catalog=self.configuration.get("catalog", "hive"),
+            http_headers={trino.constants.HEADER_CLIENT_INFO: str(user)},
             schema=self.configuration.get("schema", "default"),
             user=self.configuration.get("username"),
             auth=auth
@@ -120,6 +121,11 @@ class Trino(BaseQueryRunner):
         cursor = connection.cursor()
 
         try:
+            redash_username = f"Redash Username: {self.configuration.get('username')}"
+            redash_user = f"User: {str(user)}"
+            query_header = "/* " + redash_username + ", " + redash_user + " */\n"
+
+            cursor.execute(query_header + query)
             cursor.execute(query)
             results = cursor.fetchall()
             description = cursor.description
