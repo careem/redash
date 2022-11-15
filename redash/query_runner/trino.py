@@ -1,7 +1,7 @@
 import logging
 
 from redash.query_runner import *
-from redash.utils import json_dumps, json_loads
+from redash.utils import json_dumps, json_loads, is_cached
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ class Trino(BaseQueryRunner):
         query = """
             SELECT table_schema, table_name, column_name
             FROM information_schema.columns
-            WHERE table_schema == 'prod_dwh'
+            WHERE table_schema = 'prod_dwh'
         """
         results, error = self.run_query(query, None)
 
@@ -121,6 +121,9 @@ class Trino(BaseQueryRunner):
         cursor = connection.cursor()
 
         try:
+            if is_cached(query):
+                raise Exception("Query was cached.")
+
             cursor.execute(query)
             results = cursor.fetchall()
             description = cursor.description

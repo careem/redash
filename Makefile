@@ -58,3 +58,9 @@ bash:
 
 careem_build:
 	docker build -t careem/redash . && docker push careem/redash
+
+build_stg:
+	docker build -t karllchris/redash-stg . && docker push karllchris/redash-stg
+
+build_prod:
+	docker build -t karllchris/redash . && docker push karllchris/redash

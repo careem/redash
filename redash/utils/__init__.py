@@ -17,6 +17,7 @@ import sqlparse
 from flask import current_app
 from funcy import select_values
 from redash import settings
+from redash.models import db
 from sqlalchemy.orm.query import Query
 
 from .human_time import parse_human_time
@@ -24,6 +25,7 @@ from .human_time import parse_human_time
 COMMENTS_REGEX = re.compile("/\*.*?\*/")
 WRITER_ENCODING = os.environ.get("REDASH_CSV_WRITER_ENCODING", "utf-8")
 WRITER_ERRORS = os.environ.get("REDASH_CSV_WRITER_ERRORS", "strict")
+QUERY_CACHE = os.environ.get("QUERY_CACHE", 1800)
 
 
 def utcnow():
@@ -212,3 +214,27 @@ def render_template(path, context):
     function decorated with the `context_processor` decorator, which is not explicitly required for rendering purposes.
     """
     return current_app.jinja_env.get_template(path).render(**context)
+
+
+def current_timestamp():
+    return datetime.datetime.now()
+
+
+def is_cached(sql: str) -> bool:
+    query_hash = gen_query_hash(sql)
+
+    check_max_query = f"""
+    SELECT MAX(retrieved_at)
+    FROM query_results
+    WHERE query_hash = '{query_hash}'
+    """
+    max_ts = db.session.execute(check_max_query)
+
+    current_ts = current_timestamp()
+
+    diff = datetime.datetime.timestamp(current_ts) - datetime.datetime.timestamp(max_ts)
+
+    if diff < QUERY_CACHE:
+        return True
+    else:
+        return False
