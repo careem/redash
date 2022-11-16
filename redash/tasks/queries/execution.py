@@ -46,6 +46,7 @@ def enqueue_query(
                 logger.info("[%s] Found existing job: %s", query_hash, job_id)
                 job_complete = None
                 job_cancelled = None
+                job_queued = None
 
                 try:
                     job = Job.fetch(job_id)
@@ -53,11 +54,14 @@ def enqueue_query(
                     status = job.get_status()
                     job_complete = status in [JobStatus.FINISHED, JobStatus.FAILED]
                     job_cancelled = job.is_cancelled
+                    job_queued = status in [JobStatus.QUEUED, JobStatus.STARTED]
 
                     if job_complete:
                         message = "job found is complete (%s)" % status
                     elif job_cancelled:
                         message = "job found has ben cancelled"
+                    elif job_queued:
+                        message = "job with same query hash found"
                 except NoSuchJobError:
                     message = "job found has expired"
                     job_exists = False

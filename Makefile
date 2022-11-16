@@ -56,11 +56,14 @@ redis-cli:
 bash:
 	docker-compose run --rm server bash
 
-careem_build:
-	docker build -t careem/redash . && docker push careem/redash
-
 build_stg:
-	docker build -t karllchris/redash-stg . && docker push karllchris/redash-stg
+	docker build -t careem-redash . &&\
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg
 
 build_prod:
-	docker build -t karllchris/redash . && docker push karllchris/redash
+	docker build -t careem-redash . &&\
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:prod &&\
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:prod &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg
