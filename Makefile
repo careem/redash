@@ -69,4 +69,4 @@ build_prod:
 	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg
 
 build_karl:
-	docker build -t karllchris/redash-stg .
+	docker build -t karllchris/redash-stg . && docker push karllchris/redash-stg
