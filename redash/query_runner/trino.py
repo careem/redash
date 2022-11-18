@@ -1,7 +1,7 @@
 import logging
 
 from redash.query_runner import *
-from redash.utils import json_dumps, json_loads, is_cached
+from redash.utils import json_dumps, json_loads
 
 logger = logging.getLogger(__name__)
 
