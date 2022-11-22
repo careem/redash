@@ -19,12 +19,12 @@ logger = get_job_logger(__name__)
 TIMEOUT_MESSAGE = "Query exceeded Redash query execution time limit."
 
 
-def _job_lock_id(query_hash, data_source_id):
-    return "query_hash_job:%s:%s" % (data_source_id, query_hash)
+def _job_lock_id(query_hash):
+    return "query_hash_job:%s" % (query_hash)
 
 
-def _unlock(query_hash, data_source_id):
-    redis_connection.delete(_job_lock_id(query_hash, data_source_id))
+def _unlock(query_hash):
+    redis_connection.delete(_job_lock_id(query_hash))
 
 
 def enqueue_query(
@@ -40,8 +40,11 @@ def enqueue_query(
 
         pipe = redis_connection.pipeline()
         try:
-            pipe.watch(_job_lock_id(query_hash, data_source.id))
-            job_id = pipe.get(_job_lock_id(query_hash, data_source.id))
+            pipe.watch(_job_lock_id(query_hash))
+            # pipe.watch(query_hash)
+            job_id = pipe.get(_job_lock_id(query_hash))
+            # job_id = pipe.get(query_hash)
+            # if job_id:
             if job_id:
                 logger.info("[%s] Found existing job: %s", query_hash, job_id)
                 job_complete = None
@@ -66,11 +69,11 @@ def enqueue_query(
                     message = "job found has expired"
                     job_exists = False
 
-                lock_is_irrelevant = job_complete or job_cancelled or not job_exists
+                lock_is_irrelevant = job_complete or job_cancelled or not job_exists or not job_queued
 
                 if lock_is_irrelevant:
                     logger.info("[%s] %s, removing lock", query_hash, message)
-                    redis_connection.delete(_job_lock_id(query_hash, data_source.id))
+                    redis_connection.delete(_job_lock_id(query_hash))
                     job = None
 
             if not job:
@@ -113,7 +116,7 @@ def enqueue_query(
 
                 logger.info("[%s] Created new job: %s", query_hash, job.id)
                 pipe.set(
-                    _job_lock_id(query_hash, data_source.id),
+                    _job_lock_id(query_hash),
                     job.id,
                     settings.JOB_EXPIRY_TIME,
                 )

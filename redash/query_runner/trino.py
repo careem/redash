@@ -121,9 +121,6 @@ class Trino(BaseQueryRunner):
         cursor = connection.cursor()
 
         try:
-            # if is_cached(query):
-            #     raise Exception("Query was cached.")
-
             cursor.execute(query)
             results = cursor.fetchall()
             description = cursor.description
