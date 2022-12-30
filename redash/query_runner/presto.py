@@ -31,7 +31,7 @@ PRESTO_TYPES_MAPPING = {
 }
 
 
-class Presto(BaseQueryRunner):
+class Presto(BaseSQLQueryRunner):
     noop_query = "SHOW TABLES"
 
     @classmethod

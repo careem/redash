@@ -5,14 +5,14 @@ try:
 except ImportError:
     enabled = False
 
-from redash.query_runner import BaseQueryRunner, register
+from redash.query_runner import BaseSQLQueryRunner, register
 from redash.query_runner import TYPE_STRING, TYPE_INTEGER, TYPE_BOOLEAN
 from redash.utils import json_dumps, json_loads
 
 TYPES_MAP = {1: TYPE_STRING, 2: TYPE_INTEGER, 3: TYPE_BOOLEAN}
 
 
-class Druid(BaseQueryRunner):
+class Druid(BaseSQLQueryRunner):
     noop_query = "SELECT 1"
 
     @classmethod
