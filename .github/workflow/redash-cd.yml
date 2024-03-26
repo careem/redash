@@ -1,0 +1,22 @@
+name: build and push Redash image
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        type: string
+        default: 'latest'
+        description: Which image-tag to use
+
+jobs:
+  publish_to_ecr:
+    name: publish image to ECR
+    secrets: inherit
+    uses: careem/shared-workflows/.github/workflows/ecr-publish.yml@master
+    with:
+      tag: ${{ inputs.image-tag }}
+      ecr-name: careem-redash
+      docker-file: Dockerfile

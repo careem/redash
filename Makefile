@@ -58,8 +58,8 @@ bash:
 
 build_stg:
 	docker build -t careem-redash . &&\
-	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg &&\
-	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest
 
 build_prod:
 	docker build --network=host -t careem-redash . &&\
