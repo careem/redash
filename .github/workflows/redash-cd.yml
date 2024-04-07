@@ -2,14 +2,10 @@ name: build and push Redash image
 
 on:
   push:
-    branches:
-      - master
-  workflow_dispatch:
-    inputs:
-      image-tag:
-        type: string
-        default: 'latest'
-        description: Which image-tag to use
+    branches: ["*"]
+  pull_request:
+    branches: [ "*" ]
+  
 
 jobs:
   publish_to_ecr:
