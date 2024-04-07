@@ -2,21 +2,17 @@ name: build and push Redash image
 
 on:
   push:
-    branches:
-      - master
-  workflow_dispatch:
-    inputs:
-      image-tag:
-        type: string
-        default: 'latest'
-        description: Which image-tag to use
+    branches: ["*"]
+  pull_request:
+    branches: [ "*" ]
+  
 
 jobs:
   publish_to_ecr:
     name: publish image to ECR
     secrets: inherit
-    uses: careem/shared-workflows/.github/workflows/ecr-publish.yml@master
+    uses: careem/shared-workflows/.github/workflows/golang.yml@master
     with:
-      tag: ${{ inputs.image-tag }}
-      ecr-name: careem-redash
-      docker-file: Dockerfile
+      build-cmd: "aws sts get-caller-identity"
+      test-cmd: "aws sts get-caller-identity"
+      go-version: '^1.13.1'
