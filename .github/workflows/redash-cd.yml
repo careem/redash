@@ -1,20 +1,21 @@
-name: whoami
+name: build and push Redash image
+
 on:
   push:
-    branches: ["*"]
-  pull_request:
-    branches: [ "*" ]
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        type: string
+        default: 'latest'
+        description: Which image-tag to use
 
 jobs:
-  sync-cq:
-    runs-on: basic-k8s-runner
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2.4.2
-      - name: whoami
-        run: |
-          aws sts get-caller-identity 
-          aws s3 ls
+  publish_to_ecr:
+    name: publish image to ECR
+    secrets: inherit
+    uses: careem/shared-workflows/.github/workflows/python.yml@master
+    with:
+      python-version: "3.9"
+      test-command: "aws sts get-caller-identity"
