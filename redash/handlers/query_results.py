@@ -61,7 +61,7 @@ error_messages = {
 
 
 def run_query(
-    query, parameters, data_source, query_id, should_apply_auto_limit, max_age=0
+    query, parameters, data_source, query_id, should_apply_auto_limit, max_age=0, from_dashboard=False
 ):
     if data_source.paused:
         if data_source.pause_reason:
@@ -123,6 +123,7 @@ def run_query(
                 if current_user.is_api_user()
                 else current_user.email,
                 "query_id": query_id,
+                "Query_source": "Charts" if from_dashboard else "Query page",
             },
         )
         return serialize_job(job)
@@ -285,6 +286,7 @@ class QueryResultResource(BaseResource):
         """
         params = request.get_json(force=True, silent=True) or {}
         parameter_values = params.get("parameters", {})
+        from_dashboard = params.get("from_dashboard", False)
 
         max_age = params.get("max_age", -1)
         # max_age might have the value of None, in which case calling int(None) will fail
@@ -309,6 +311,7 @@ class QueryResultResource(BaseResource):
                 query_id,
                 should_apply_auto_limit,
                 max_age,
+                from_dashboard
             )
         else:
             if not query.parameterized.is_safe:
