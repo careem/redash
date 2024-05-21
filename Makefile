@@ -63,10 +63,10 @@ build_stg:
 
 build_prod:
 	docker build --network=host -t careem-redash . &&\
-	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:11.0.0 &&\
-	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:11.0.0 &&\
-	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest &&\
-	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:prod &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:prod &&\
+	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg &&\
+	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:stg
 
 build_karl_stg:
 	docker build -t karllchris/redash-stg . && docker push karllchris/redash-stg
