@@ -131,9 +131,9 @@ export class Query {
     return this.queryResult;
   }
 
-  getQueryResult(maxAge, fromDashboard = false) {
+  getQueryResult(maxAge) {
     const execute = () =>
-      QueryResult.getByQueryId(this.id, this.getParameters().getExecutionValues(), this.getAutoLimit(), maxAge, fromDashboard);
+      QueryResult.getByQueryId(this.id, this.getParameters().getExecutionValues(), this.getAutoLimit(), maxAge);
     return this.prepareQueryResultExecution(execute, maxAge);
   }
 
