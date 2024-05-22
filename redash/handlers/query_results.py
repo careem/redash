@@ -123,7 +123,7 @@ def run_query(
                 if current_user.is_api_user()
                 else current_user.email,
                 "query_id": query_id,
-                "Query_source": "Charts" if from_dashboard else "Query page",
+                "Query_source": "Widgets" if from_dashboard else "Query page",
             },
         )
         return serialize_job(job)
