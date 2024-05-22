@@ -57,8 +57,7 @@ bash:
 	docker-compose run --rm server bash
 
 build_stg:
-	docker build -t careem-redash . &&\
-	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest &&\
+	docker build -t careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest . &&\
 	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest
 
 build_prod:
@@ -67,9 +66,3 @@ build_prod:
 	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:11.0.0 &&\
 	docker tag careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest &&\
 	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest
-
-build_karl_stg:
-	docker build -t karllchris/redash-stg . && docker push karllchris/redash-stg
-
-build_karl:
-	docker build -t karllchris/redash . && docker push karllchris/redash
