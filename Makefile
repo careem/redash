@@ -57,7 +57,7 @@ bash:
 	docker-compose run --rm server bash
 
 build_stg:
-	docker build -t careem-redash 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest . &&\
+	docker build -t 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest . &&\
 	docker push 848569320300.dkr.ecr.eu-west-1.amazonaws.com/careem-redash:latest
 
 build_prod:
