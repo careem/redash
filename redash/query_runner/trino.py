@@ -113,6 +113,7 @@ class Trino(BaseSQLQueryRunner):
             port=self.configuration.get("port", 8080),
             catalog=self.configuration.get("catalog", "hive"),
             http_headers={trino.constants.HEADER_CLIENT_INFO: str(user)},
+            source="Redash",
             schema=self.configuration.get("schema", "default"),
             user=self.configuration.get("username"),
             auth=auth
