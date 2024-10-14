@@ -16,6 +16,7 @@ import notification from "@/services/notification";
 import routes from "@/services/routes";
 
 import { DashboardAndQueryFavoritesList } from "./components/FavoritesList";
+import DeprecationBanner from "@/components/DeprecationBanner";
 
 import "./Home.less";
 
@@ -74,6 +75,9 @@ export default function Home() {
   return (
     <div className="home-page">
       <div className="container">
+        <div className="banner-margin">
+          <DeprecationBanner />
+        </div>
         {includes(messages, "using-deprecated-embed-feature") && <DeprecatedEmbedFeatureAlert />}
         {includes(messages, "email-not-verified") && <EmailNotVerifiedAlert />}
         <DynamicComponent name="Home.EmptyState">
