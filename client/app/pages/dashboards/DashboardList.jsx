@@ -22,7 +22,6 @@ import { currentUser } from "@/services/auth";
 import routes from "@/services/routes";
 
 import DashboardListEmptyState from "./components/DashboardListEmptyState";
-import DeprecationBanner from "@/components/DeprecationBanner";
 
 import "./dashboard-list.css";
 
@@ -92,7 +91,6 @@ function DashboardList({ controller }) {
   return (
     <div className="page-dashboard-list">
       <div className="container">
-        {controller?.params?.currentPage === "all" && <DeprecationBanner />}
         <PageHeader
           title={controller.params.pageTitle}
           actions={
