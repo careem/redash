@@ -20,6 +20,7 @@ import { durationHumanize } from "@/lib/utils";
 import { DashboardStatusEnum } from "../hooks/useDashboard";
 
 import "./DashboardHeader.less";
+import DeprecationBanner from "@/components/DeprecationBanner";
 
 function getDashboardTags() {
   return getTags("api/dashboards/tags").then(tags => map(tags, t => t.name));
@@ -286,10 +287,14 @@ export default function DashboardHeader({ dashboardConfiguration, headerExtra })
   const DashboardControlComponent = editingLayout ? DashboardEditControl : DashboardControl;
 
   return (
-    <div className="dashboard-header">
-      <DashboardPageTitle dashboardConfiguration={dashboardConfiguration} />
-      <DashboardControlComponent dashboardConfiguration={dashboardConfiguration} headerExtra={headerExtra} />
-    </div>
+    <>
+      <DeprecationBanner />
+      <div className="dashboard-header">
+        <DashboardPageTitle dashboardConfiguration={dashboardConfiguration} />
+        <DashboardControlComponent dashboardConfiguration={dashboardConfiguration} headerExtra={headerExtra} />
+      </div>
+    </>
+
   );
 }
 

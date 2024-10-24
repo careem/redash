@@ -23,6 +23,7 @@ import useApiKeyDialog from "../hooks/useApiKeyDialog";
 import usePermissionsEditorDialog from "../hooks/usePermissionsEditorDialog";
 
 import "./QueryPageHeader.less";
+import DeprecationBanner from "@/components/DeprecationBanner";
 
 function getQueryTags() {
   return getTags("api/queries/tags").then(tags => map(tags, t => t.name));
@@ -34,7 +35,7 @@ function createMenu(menu) {
   const groups = map(menu, group =>
     filter(
       map(group, (props, key) => {
-        props = extend({ isAvailable: true, isEnabled: true, onClick: () => {} }, props);
+        props = extend({ isAvailable: true, isEnabled: true, onClick: () => { } }, props);
         if (props.isAvailable) {
           handlers[key] = props.onClick;
           return (
@@ -147,65 +148,69 @@ export default function QueryPageHeader({
   );
 
   return (
-    <div className="query-page-header">
-      <div className="title-with-tags">
-        <div className="page-title">
-          <div className="d-flex align-items-center">
-            {!queryFlags.isNew && <FavoritesControl item={query} />}
-            <h3>
-              <EditInPlace isEditable={queryFlags.canEdit} onDone={updateName} ignoreBlanks value={query.name} />
-            </h3>
+    <>
+      <DeprecationBanner />
+      <div className="query-page-header">
+        <div className="title-with-tags">
+          <div className="page-title">
+            <div className="d-flex align-items-center">
+              {!queryFlags.isNew && <FavoritesControl item={query} />}
+              <h3>
+                <EditInPlace isEditable={queryFlags.canEdit} onDone={updateName} ignoreBlanks value={query.name} />
+              </h3>
+            </div>
+          </div>
+          <div className="query-tags">
+            <QueryTagsControl
+              tags={query.tags}
+              isDraft={queryFlags.isDraft}
+              isArchived={queryFlags.isArchived}
+              canEdit={queryFlags.canEdit}
+              getAvailableTags={getQueryTags}
+              onEdit={updateTags}
+              tagsExtra={tagsExtra}
+            />
           </div>
         </div>
-        <div className="query-tags">
-          <QueryTagsControl
-            tags={query.tags}
-            isDraft={queryFlags.isDraft}
-            isArchived={queryFlags.isArchived}
-            canEdit={queryFlags.canEdit}
-            getAvailableTags={getQueryTags}
-            onEdit={updateTags}
-            tagsExtra={tagsExtra}
-          />
+        <div className="header-actions">
+          {headerExtra}
+          {isDesktop && queryFlags.isDraft && !queryFlags.isArchived && !queryFlags.isNew && queryFlags.canEdit && (
+            <Button className="m-r-5" onClick={publishQuery}>
+              <i className="fa fa-paper-plane m-r-5" aria-hidden="true" /> Publish
+            </Button>
+          )}
+
+          {!queryFlags.isNew && queryFlags.canViewSource && (
+            <span>
+              {!sourceMode && (
+                <Link.Button className="m-r-5" href={query.getUrl(true, selectedVisualization)}>
+                  <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                  <span className="m-l-5">Edit Source</span>
+                </Link.Button>
+              )}
+              {sourceMode && (
+                <Link.Button
+                  className="m-r-5"
+                  href={query.getUrl(false, selectedVisualization)}
+                  data-test="QueryPageShowResultOnly">
+                  <i className="fa fa-table" aria-hidden="true" />
+                  <span className="m-l-5">Show Results Only</span>
+                </Link.Button>
+              )}
+            </span>
+          )}
+
+          {!queryFlags.isNew && (
+            <Dropdown overlay={moreActionsMenu} trigger={["click"]}>
+              <Button data-test="QueryPageHeaderMoreButton" aria-label="More actions">
+                <EllipsisOutlinedIcon rotate={90} aria-hidden="true" />
+              </Button>
+            </Dropdown>
+          )}
         </div>
       </div>
-      <div className="header-actions">
-        {headerExtra}
-        {isDesktop && queryFlags.isDraft && !queryFlags.isArchived && !queryFlags.isNew && queryFlags.canEdit && (
-          <Button className="m-r-5" onClick={publishQuery}>
-            <i className="fa fa-paper-plane m-r-5" aria-hidden="true" /> Publish
-          </Button>
-        )}
+    </>
 
-        {!queryFlags.isNew && queryFlags.canViewSource && (
-          <span>
-            {!sourceMode && (
-              <Link.Button className="m-r-5" href={query.getUrl(true, selectedVisualization)}>
-                <i className="fa fa-pencil-square-o" aria-hidden="true" />
-                <span className="m-l-5">Edit Source</span>
-              </Link.Button>
-            )}
-            {sourceMode && (
-              <Link.Button
-                className="m-r-5"
-                href={query.getUrl(false, selectedVisualization)}
-                data-test="QueryPageShowResultOnly">
-                <i className="fa fa-table" aria-hidden="true" />
-                <span className="m-l-5">Show Results Only</span>
-              </Link.Button>
-            )}
-          </span>
-        )}
-
-        {!queryFlags.isNew && (
-          <Dropdown overlay={moreActionsMenu} trigger={["click"]}>
-            <Button data-test="QueryPageHeaderMoreButton" aria-label="More actions">
-              <EllipsisOutlinedIcon rotate={90} aria-hidden="true" />
-            </Button>
-          </Dropdown>
-        )}
-      </div>
-    </div>
   );
 }
 
@@ -229,5 +234,5 @@ QueryPageHeader.defaultProps = {
   selectedVisualization: null,
   headerExtra: null,
   tagsExtra: null,
-  onChange: () => {},
+  onChange: () => { },
 };
