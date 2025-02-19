@@ -33,8 +33,7 @@ function DeprecationBanner() {
       <div className="banner-content">
         <ExclamationCircleFilled className="warning-icon" />
         <div className="banner-text">
-          Redash will be deprecated by {' '}<strong>June 2025.</strong>
-          For more queries and support, please connect with us on slack at{' '}
+          Redash will be deprecated by {' '}<strong>June 2025.</strong>Creation of new dashboards has been disabled, and creation of alerts/queries will be disabled soon. Please migrate your assets to <strong>Careem Insights</strong> and for more queries: Please reach out to us on Slack at{' '}
           <span className="support-channel">#careem-insights-support</span>
         </div>
       </div>
