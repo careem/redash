@@ -155,18 +155,6 @@ function EmptyState({
       ),
     },
     {
-      key: "dashboards",
-      node: (
-        <Step
-          key="dashboards"
-          show={isAvailable.dashboard}
-          completed={isCompleted.dashboard}
-          onClick={showCreateDashboardDialog}
-          urlText="Create your first Dashboard"
-        />
-      ),
-    },
-    {
       key: "users",
       node: (
         <Step
@@ -233,7 +221,7 @@ EmptyState.defaultProps = {
   header: null,
   helpMessage: null,
   closable: false,
-  onClose: () => {},
+  onClose: () => { },
 
   onboardingMode: false,
   showAlertStep: false,
