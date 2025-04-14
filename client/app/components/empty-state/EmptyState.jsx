@@ -143,18 +143,6 @@ function EmptyState({
       ),
     },
     {
-      key: "alerts",
-      node: (
-        <Step
-          key="alerts"
-          show={isAvailable.alert}
-          completed={isCompleted.alert}
-          url="alerts/new"
-          urlText="Create your first Alert"
-        />
-      ),
-    },
-    {
       key: "users",
       node: (
         <Step

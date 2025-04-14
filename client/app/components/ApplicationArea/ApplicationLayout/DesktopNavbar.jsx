@@ -56,7 +56,7 @@ function useNavbarActiveState() {
         currentRoute.id
       ),
       dataSources: includes(["DataSources.List"], currentRoute.id),
-      alerts: includes(["Alerts.List", "Alerts.New", "Alerts.View"], currentRoute.id),
+      alerts: includes(["Alerts.List", "Alerts.New", "Alerts.View", "Alerts.Edit"], currentRoute.id),
     }),
     [currentRoute.id]
   );
