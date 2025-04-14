@@ -86,7 +86,7 @@ class AlertsList extends React.Component {
           <PageHeader
             title={controller.params.pageTitle}
             actions={
-              currentUser.hasPermission("create_alerts") ? (
+              currentUser.hasPermission("create_alert") ? (
                 <Link.Button block type="primary" href="alerts/new">
                   <i className="fa fa-plus m-r-5" aria-hidden="true" />
                   New Alert
