@@ -42,7 +42,7 @@ class Alert extends React.Component {
   static defaultProps = {
     mode: null,
     alertId: null,
-    onError: () => {},
+    onError: () => { },
   };
 
   _isMounted = false;
@@ -77,7 +77,7 @@ class Alert extends React.Component {
       AlertService.get({ id: alertId })
         .then(alert => {
           if (this._isMounted) {
-            const canEdit = currentUser.canEdit(alert);
+            const canEdit = currentUser.canEdit(alert) && currentUser.hasPermission("create_alerts")
 
             // force view mode if can't edit
             if (!canEdit) {

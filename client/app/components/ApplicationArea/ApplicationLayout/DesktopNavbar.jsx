@@ -56,7 +56,7 @@ function useNavbarActiveState() {
         currentRoute.id
       ),
       dataSources: includes(["DataSources.List"], currentRoute.id),
-      alerts: includes(["Alerts.List", "Alerts.New", "Alerts.View", "Alerts.Edit"], currentRoute.id),
+      alerts: includes(["Alerts.List", "Alerts.New", "Alerts.View"], currentRoute.id),
     }),
     [currentRoute.id]
   );
@@ -69,7 +69,7 @@ export default function DesktopNavbar() {
 
   const canCreateQuery = currentUser.hasPermission("create_query");
   const canCreateDashboard = currentUser.hasPermission("create_dashboard");
-  const canCreateAlert = currentUser.hasPermission("list_alerts");
+  const canCreateAlert = currentUser.hasPermission("create_alerts");
 
   return (
     <nav className="desktop-navbar">
