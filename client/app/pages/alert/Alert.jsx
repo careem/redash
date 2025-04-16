@@ -78,7 +78,6 @@ class Alert extends React.Component {
         .then(alert => {
           if (this._isMounted) {
             const canEdit = currentUser.canEdit(alert)
-            // const canEdit = currentUser.canEdit(alert) && currentUser.hasPermission("create_alert")
 
             // force view mode if can't edit
             if (!canEdit) {
@@ -247,7 +246,7 @@ class Alert extends React.Component {
           {mode === MODES.VIEW && (
             <AlertView canEdit={canEdit} onEdit={this.edit} muted={muted} unmute={this.unmute} {...commonProps} />
           )}
-          {mode === MODES.EDIT && <AlertEdit cancel={this.cancel} {...commonProps} />}
+          {mode === MODES.EDIT && currentUser.hasPermission("create_alert") && <AlertEdit cancel={this.cancel} {...commonProps} />}
         </div>
       </div>
     );

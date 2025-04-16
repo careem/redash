@@ -187,7 +187,7 @@ export default class AlertDestinations extends React.Component {
 
     return (
       <div className="alert-destinations" data-test="AlertDestinations">
-        <Tooltip title='Click to add an existing "Alert Destination"' mouseEnterDelay={0.5}>
+        {currentUser.hasPermission("create_alert") && <Tooltip title='Click to add an existing "Alert Destination"' mouseEnterDelay={0.5}>
           <Button
             data-test="ShowAddAlertSubDialog"
             type="primary"
@@ -196,13 +196,13 @@ export default class AlertDestinations extends React.Component {
             onClick={this.showAddAlertSubDialog}>
             <i className="fa fa-plus f-12 m-r-5" aria-hidden="true" /> Add
           </Button>
-        </Tooltip>
+        </Tooltip>}
         <ul>
           <li className="destination-wrapper">
             <i className="destination-icon fa fa-envelope" aria-hidden="true" />
             <span className="flex-fill">{currentUser.email}</span>
             <EmailSettingsWarning className="destination-warning" featureName="alert emails" mode="icon" />
-            {!mailSettingsMissing && (
+            {!mailSettingsMissing && currentUser.hasPermission("create_alert") && (
               <Switch
                 size="small"
                 className="toggle-button"

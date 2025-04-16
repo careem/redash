@@ -10,6 +10,7 @@ import Button from "antd/lib/button";
 import LoadingOutlinedIcon from "@ant-design/icons/LoadingOutlined";
 import EllipsisOutlinedIcon from "@ant-design/icons/EllipsisOutlined";
 import PlainButton from "@/components/PlainButton";
+import { currentUser } from "@/services/auth";
 
 export default function MenuButton({ doDelete, canEdit, mute, unmute, muted }) {
   const [loading, setLoading] = useState(false);
@@ -45,13 +46,13 @@ export default function MenuButton({ doDelete, canEdit, mute, unmute, muted }) {
       placement="bottomRight"
       overlay={
         <Menu>
-          <Menu.Item>
+          {currentUser.hasPermission("create_alert") && <Menu.Item>
             {muted ? (
               <PlainButton onClick={() => execute(unmute)}>Unmute Notifications</PlainButton>
             ) : (
               <PlainButton onClick={() => execute(mute)}>Mute Notifications</PlainButton>
             )}
-          </Menu.Item>
+          </Menu.Item>}
           <Menu.Item>
             <PlainButton onClick={confirmDelete}>Delete</PlainButton>
           </Menu.Item>
