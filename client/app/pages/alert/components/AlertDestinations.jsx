@@ -45,7 +45,7 @@ function ListItem({ destination: { name, type }, user, unsubscribe }) {
       {type === "email" && (
         <EmailSettingsWarning className="destination-warning" featureName="alert emails" mode="icon" />
       )}
-      {canUnsubscribe && (
+      {canUnsubscribe && currentUser.hasPermission("create_alert") && (
         <Tooltip title="Remove" mouseEnterDelay={0.5}>
           <PlainButton className="remove-button" onClick={unsubscribe}>
             {/* TODO: lacks visual feedback */}
@@ -202,7 +202,7 @@ export default class AlertDestinations extends React.Component {
             <i className="destination-icon fa fa-envelope" aria-hidden="true" />
             <span className="flex-fill">{currentUser.email}</span>
             <EmailSettingsWarning className="destination-warning" featureName="alert emails" mode="icon" />
-            {!mailSettingsMissing && currentUser.hasPermission("create_alert") && (
+            {!mailSettingsMissing && (
               <Switch
                 size="small"
                 className="toggle-button"
@@ -210,6 +210,7 @@ export default class AlertDestinations extends React.Component {
                 loading={!subs}
                 onChange={() => this.onUserEmailToggle(currentUserEmailSub)}
                 data-test="UserEmailToggle"
+                disabled={!currentUser.hasPermission("create_alert")}
               />
             )}
           </li>
