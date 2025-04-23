@@ -42,7 +42,7 @@ class Alert extends React.Component {
   static defaultProps = {
     mode: null,
     alertId: null,
-    onError: () => {},
+    onError: () => { },
   };
 
   _isMounted = false;
@@ -77,7 +77,7 @@ class Alert extends React.Component {
       AlertService.get({ id: alertId })
         .then(alert => {
           if (this._isMounted) {
-            const canEdit = currentUser.canEdit(alert);
+            const canEdit = currentUser.canEdit(alert)
 
             // force view mode if can't edit
             if (!canEdit) {
@@ -242,11 +242,11 @@ class Alert extends React.Component {
     return (
       <div className="alert-page">
         <div className="container">
-          {mode === MODES.NEW && <AlertNew {...commonProps} />}
+          {mode === MODES.NEW && currentUser.hasPermission("create_alert") && <AlertNew {...commonProps} />}
           {mode === MODES.VIEW && (
             <AlertView canEdit={canEdit} onEdit={this.edit} muted={muted} unmute={this.unmute} {...commonProps} />
           )}
-          {mode === MODES.EDIT && <AlertEdit cancel={this.cancel} {...commonProps} />}
+          {mode === MODES.EDIT && currentUser.hasPermission("create_alert") && <AlertEdit cancel={this.cancel} {...commonProps} />}
         </div>
       </div>
     );

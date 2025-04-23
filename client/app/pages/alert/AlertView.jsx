@@ -20,6 +20,7 @@ import AlertDestinations from "./components/AlertDestinations";
 import HorizontalFormItem from "./components/HorizontalFormItem";
 import { STATE_CLASS } from "../alerts/AlertsList";
 import DynamicComponent from "@/components/DynamicComponent";
+import { currentUser } from "@/services/auth";
 
 function AlertState({ state, lastTriggered }) {
   return (
@@ -69,10 +70,10 @@ export default class AlertView extends React.Component {
         <Title name={name} alert={alert}>
           <DynamicComponent name="AlertView.HeaderExtra" alert={alert} />
           <Tooltip title={canEdit ? "" : "You do not have sufficient permissions to edit this alert"}>
-            <Button type="default" onClick={canEdit ? onEdit : null} className={cx({ disabled: !canEdit })}>
+            {currentUser.hasPermission("create_alert") && <Button type="default" onClick={canEdit ? onEdit : null} className={cx({ disabled: !canEdit })}>
               <i className="fa fa-edit m-r-5" aria-hidden="true" />
               Edit
-            </Button>
+            </Button>}
             {menuButton}
           </Tooltip>
         </Title>
@@ -118,7 +119,7 @@ export default class AlertView extends React.Component {
                     <>
                       Notifications for this alert will not be sent.
                       <br />
-                      {canEdit && (
+                      {canEdit && currentUser.hasPermission("create_alert") && (
                         <>
                           To restore notifications click
                           <Button
